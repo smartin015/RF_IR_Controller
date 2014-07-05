@@ -7,7 +7,7 @@
 #define CMD_IR_BUFFER (0x10)
 #define CMD_IR_SEND (0x11)
 #define CMD_IR_RESET (0x12)
-
+#define CMD_IR_TEST (0x14)
 #define DATA_LEN 3
 
 #endif

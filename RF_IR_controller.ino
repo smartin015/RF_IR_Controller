@@ -28,7 +28,7 @@ void setup_SW() {
   digitalWrite(RELAY_PIN, LOW);
 }
 
-#define RF_ADDRESS "serv1"
+#define RF_ADDRESS "ctrl1"
 void setup() {
   Serial.begin(9600);
   setup_IR();
@@ -38,37 +38,41 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Waiting for command...");
   rf_wait_for_cmd();
-  Serial.println("Command received");
   switch (rf_cmd_type()) {
     case CMD_FET1:
       digitalWrite(FET1_PIN, rf_cmd_val());
-      Serial.println("FET1");
+      Serial.print("FET1 ");
       Serial.println(rf_cmd_val());
       break;
     case CMD_FET2:
       digitalWrite(FET2_PIN, rf_cmd_val());
-      Serial.println("FET2");
+      Serial.print("FET2 ");
       Serial.println(rf_cmd_val());
       break;
     case CMD_RELAY:
       digitalWrite(RELAY_PIN, rf_cmd_val());
-      Serial.println("RELAY");
+      Serial.print("RELAY ");
       Serial.println(rf_cmd_val());
       break;
     case CMD_IR_BUFFER:
       IR_push(rf_cmd_val());
       break;
     case CMD_IR_SEND:
-      Serial.println("IR_SEND");
-      IR_send();
+      IR_send(rf_cmd_val());
+      Serial.println("IR SENT");
       break;
     case CMD_IR_RESET:
-      Serial.println("IR_SEND");
       IR_reset();
+      Serial.println("IR RESET");
+      break;
+    case CMD_IR_TEST:
+      Serial.println("IR TEST");
+      IR_test();
       break;
     default:
       err("INVALID_CMD");
   }
+  
+  //rf_ack();
 }

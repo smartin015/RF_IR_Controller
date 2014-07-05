@@ -4,6 +4,7 @@
 #include <MirfHardwareSpiDriver.h>
 #include "commands.h"
 
+
 byte data[DATA_LEN];
 
 void setup_RF(char * address){
@@ -15,14 +16,19 @@ void setup_RF(char * address){
 }
 
 void rf_wait_for_cmd(){
+  
   while (true) {
     if(!Mirf.isSending() && Mirf.dataReady()){
-      Serial.println("Got packet");
       Mirf.getData(data);
-      // TODO: ACK?
-      return;
+      break;
     }
   }
+}
+
+void rf_ack() {
+  // Echo what was received back to confirm
+  Mirf.setTADDR((byte *)"serv1");
+  Mirf.send(data);
 }
 
 byte rf_cmd_type() {
