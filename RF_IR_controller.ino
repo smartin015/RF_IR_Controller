@@ -28,25 +28,26 @@ void setup_SW() {
   digitalWrite(RELAY_PIN, LOW);
 }
 
-#define RF_ADDRESS "ctrl1"
+#define RF_ADDRESS "ctlhs"
 void setup() {
   Serial.begin(9600);
   setup_IR();
   setup_SW();
   setup_RF(RF_ADDRESS);
   setup_ERR();
+  Serial.println("Listening");
 }
 
 void loop() {
   rf_wait_for_cmd();
   switch (rf_cmd_type()) {
     case CMD_FET1:
-      digitalWrite(FET1_PIN, rf_cmd_val());
+      analogWrite(FET1_PIN, rf_cmd_val());
       Serial.print("FET1 ");
       Serial.println(rf_cmd_val());
       break;
     case CMD_FET2:
-      digitalWrite(FET2_PIN, rf_cmd_val());
+      analogWrite(FET2_PIN, rf_cmd_val());
       Serial.print("FET2 ");
       Serial.println(rf_cmd_val());
       break;
